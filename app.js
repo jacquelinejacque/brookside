@@ -1,9 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const db = require('./models'); // Import the whole db object
+const bodyParser= require('body-parser');
+const bcrypt= require('bcrypt');
+const jwt = require('jsonwebtoken')
 const Product = db.Product; // Get the Product model from the db object
 const Order = db.Order;
 const Customer = db.Customer;
+// Define an empty users array for temporary signup data
+const users= [];
+
+
 
 const app = express();
 const corsOptions = {
@@ -14,6 +21,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 //Loading style.css as a static file
 app.use(express.static('public'));
@@ -22,8 +31,93 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
-  res.redirect('/products');
+  res.redirect('/signUp');
 });
+
+//login
+app.get('/login',(req,res) =>{
+    res.render('login',{ title: 'Login' });
+});
+
+//SignUp
+app.get('/signUp',(req,res,next) =>{
+    res.render('signUp', { title: 'SignUp' });
+});
+
+app.post('/signUp', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Find a user with the provided username using findOne
+        const existingUser = await db.User.findOne({ where: { username } });
+
+        if (existingUser) {
+            return res.status(400).send({ message: 'Username already exists' });
+        }
+
+        // Create a new user using the User model
+        const user = await db.User.create({ username, password: hashedPassword });
+
+        res.redirect('/signUp');
+        res.status(201).send();
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: "An error occurred during signup." });
+    }
+});
+
+
+
+app.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // Find a user with the provided username using findOne and an options object
+    const user = await db.User.findOne({ where: { username } });
+
+    if (user) {
+      // Compare passwords
+      if (await bcrypt.compare(password, user.password)) {
+        // Generate token
+        const token = jwt.sign({ username }, 'secret');
+        res.redirect('/products');
+        
+      } else {
+        res.status(401).send('Invalid username or password');
+      }
+    } else {
+      res.status(401).send('Invalid username or password');
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "An error occurred during login." });
+  }
+});
+
+
+// Protected route
+app.get('/protected', authenticateToken, (req, res) => {
+  res.send('Protected route');
+});
+
+// Middleware to authenticate token
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, 'secret', (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+
 //creating a new product
 app.get('/api/products/create', (req, res) => {
   res.render('create', { title: 'Create New Product' });

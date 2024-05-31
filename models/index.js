@@ -28,6 +28,10 @@ db.sequelize = sequelize;
 db.Product = require('./productModel.js')(sequelize, DataTypes); // Ensure correct import
 db.Order = require('./orderModel.js')(sequelize, DataTypes);     // Ensure correct import
 db.Customer = require('./customerModel.js')(sequelize, DataTypes);
+const User = require('./usersModel.js')(sequelize, DataTypes);
+
+db.User = User;
+
 
 db.sequelize.sync({ force: false })
   .then(() => {

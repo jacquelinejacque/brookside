@@ -166,3 +166,12 @@ h3 {
     font-size: 1.2em;
     cursor: pointer;
 }
+
+.login-form {
+    max-width: 400px;
+    margin-top: 20px;
+    margin-left: 30;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
