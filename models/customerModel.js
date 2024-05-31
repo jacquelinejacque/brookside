@@ -1,25 +1,23 @@
-const { DataTypes } = require("sequelize")
-const { sequelize } = require(".")
-
-module.exports= (sequelize,DataTypes)=>{
-    const Product = sequelize.define('product', {
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
+module.exports = (sequelize, DataTypes) => {
+  const Customer = sequelize.define('Customer', {
+    // Define your model attributes here
+    customer_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     phone_number: {
-        type: DataTypes.TEL
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     location: {
-        type: DataTypes.TEXT
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    category:{
-        type: DataTypes.STRING
+    stock_quantity: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
-    stock_quantity:{
-        type: DataTypes.INTEGER
-    }
-})
-return Product
-}
+  });
 
+  return Customer;
+};

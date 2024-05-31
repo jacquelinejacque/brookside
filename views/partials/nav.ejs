@@ -1,9 +1,29 @@
-<nav>
+
+<nav class="navbar">
     <div class="site-title"></div>
-    <a href="/"><h1>Products Available</h1></a>
-    <p>Brookside</p>
-    <ul>
-        <li><a href="/api/products/create">New Products</a></li>
-        <li><a href="/products">All Products</a></li>
+    <a href="/"><h2>Brookside Limited Distributors</h2></a>
+    <p>Brookside Limited</p>
+    <ul class="nav-list">
+
+        <li class="nav-item dropdown">
+            <a href="/products" class="nav-link dropdown-toggle">Products <i class="fas fa-angle-down"></i></a>
+            <ul class="dropdown-menu">
+            <li><a href="/api/products/create">Category 1</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a href="/customers" class="nav-link dropdown-toggle">Customers <i class="fas fa-angle-down"></i></a>
+            <ul class="dropdown-menu">
+            <li><a href="/api/customers/create">Create customer 1</a></li>
+            </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a href="/orders" class="nav-link dropdown-toggle">Orders <i class="fas fa-angle-down"></i></a>
+            <ul class="dropdown-menu">
+            <li><a href="/api/orders/create">Create order</a></li>
+            </ul>
+        </li>
     </ul>
 </nav>

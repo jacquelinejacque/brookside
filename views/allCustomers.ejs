@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="customer content">
+        <h2>All customers</h2>
+        <% if (customers.length > 0) { %>
+            <% customers.forEach(customer => { %>
+                <h3 class="customerName"><a class="single" href="/customers/<%= customer.id %>"><%= customer.customer_name %></a></h3>
+                <p class="phone_number">Phone Number:<%= customer.phone_number %></p>
+                <p class="location">Location:<%= customer.location %></p>
+                <p class="stock_quantity">Stock Quantity:Ksh. <%= customer.stock_quantity %></p>
+            <% }) %>   
+        <% } else { %> 
+            <p>No products updated yet!!</p>
+        <% } %>
+    </div>
+    
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <h2>Edit Order</h2>
+    <div class="edit-order content"></div>  
+    <form action="/order/<%= order.id %>?_method=PUT" method="POST">
+        <label for="name">Order Date:</label><br>
+        <input type="date" id="order_date" name="order_date" value="<%= order.order_date %>" required><br>
+        <label for="total_price">Total Price:</label><br>
+        <input type="number" id="total_price" name="total_price" value="<%= order.total_price %>" required><br>
+        <label for="status">Status</label><br>
+        <input type="radio" id="status" name="status" value="<%= order.status %>">
+        <label for="status">Approved</label>
+        <input type="radio" id="status" name="status" value="<%= order.status %>">
+        <label for="status">Not Approved</label><br>
+    <button type="submit">Update</button>
+    </form>
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>

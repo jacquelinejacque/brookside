@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head') %>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="order content">
+        <h2>All Orders</h2>
+        <% if (orders.length > 0) { %>
+            <% orders.forEach(order => { %>
+                <h3 class="order_date"><a class="single" href="/orders/<%= order.id %>"><%= order.order_date %></a></h3>
+                <p class="status">Status:<%= order.status %></p>
+                <p class="total_price">Total_Price:<%= order.total_price %></p>
+            <% }) %>   
+        <% } else { %> 
+            <p>No orders updated yet!!</p>
+        <% } %>
+    </div>
+    
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs') %>
+<body>
+    <%- include('./partials/nav.ejs') %>
+    <div class="customer content">
+        <h3><%= customer.customer_name %></h3>
+        <div class="content">
+            <p><strong>Customer Name:</strong> <%= customer.customer_name %></p>
+            <p><strong>Phone Number:</strong> <%= customer.phone_number %></p>
+            <p><strong>Location:</strong> <%= customer.location %></p>
+            <p><strong>Stock Quantity:</strong>Ksh .<%= customer.stock_quantity %></p>
+        </div>
+        <button class="delete" id="deleteButton" data-id="<%= customer.id %>">Delete</button>
+        <a href="/customers/<%= customer.id %>/edit">Edit</a>
+
+    </div>
+
+    <script>
+        document.getElementById('deleteButton').addEventListener('click', function() {
+  const customerId = this.getAttribute('data-id'); // Get customer ID from button attribute
+  if (confirm('Are you sure you want to delete this customer?')) {
+    fetch(`/customers/${customerId}`, {
+      method: 'DELETE',
+    })
+    .then(response => {
+      if (response.status === 204) {
+        window.location.href = '/customers';
+      } else {
+        alert('Failed to delete customer');
+      }
+    })
+    .catch(error => {
+      console.error('Error deleting customer:', error);
+      alert('Error deleting customer');
+    });
+  }
+});
+
+    </script>
+    <%- include('./partials/footer.ejs') %>
+</body>
+</html>
